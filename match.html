@@ -1,47 +1,61 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Match</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>Dettaglio Match</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <nav class="navbar">
-  <div class="nav-title">⚽ Calcetto Stats</div>
+  <strong>⚽ Calcetto Stats</strong>
   <div class="nav-links">
-    <a href="players.html">Giocatori</a>
-    <a href="ranking.html">Classifiche</a>
-    <a href="matches.html">Match</a>
+    <a href="matches.html">← Match</a>
     <button id="darkToggle">🌙</button>
   </div>
 </nav>
 
-<div id="match"></div>
+<div id="content"></div>
 
 <script type="module">
-
 import { initDarkMode } from "./js/darkmode.js";
-import { matches } from "./js/mockData.js";
+import { getMatches, getPlayers } from "./js/db.js";
 
 initDarkMode();
 
 const id = new URLSearchParams(location.search).get("id");
-const m = matches.find(x => x.id === id);
+const matches = await getMatches();
+const players = await getPlayers();
 
-document.getElementById("match").innerHTML = `
+const match = matches.find(m => m.id === id);
+
+if (!match) {
+  document.getElementById("content").innerHTML = "<p>Match non trovato</p>";
+  throw new Error("Match non trovato");
+}
+
+const nameOf = id =>
+  players.find(p => p.id === id)?.name || id;
+
+document.getElementById("content").innerHTML = `
   <div class="match-detail">
-    <h2>${m.scoreA} - ${m.scoreB}</h2>
-    <p><strong>${m.date} • ${m.time}</strong></p>
-    <p>${m.place}</p>
+    <h2>${match.scoreA} - ${match.scoreB}</h2>
+    <p><strong>${match.date} • ${match.time}</strong></p>
+    <p>${match.place}</p>
 
-    <p><strong>Squadra A:</strong> ${m.teamA.join(", ")}</p>
-    <p><strong>Squadra B:</strong> ${m.teamB.join(", ")}</p>
+    <h3>Squadra A</h3>
+    <p>${match.teamA.map(nameOf).join(", ")}</p>
+
+    <h3>Squadra B</h3>
+    <p>${match.teamB.map(nameOf).join(", ")}</p>
 
     <h3>⚽ Gol</h3>
     <ul>
-      ${m.goals.map(g =>
-        `<li>${g.scorer}${g.assist ? " (assist " + g.assist + ")" : ""}</li>`
+      ${match.goals.map(g =>
+        `<li>
+          ${nameOf(g.scorer)}
+          ${g.assist ? "(assist " + nameOf(g.assist) + ")" : ""}
+        </li>`
       ).join("")}
     </ul>
   </div>
