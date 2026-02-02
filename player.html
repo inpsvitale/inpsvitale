@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Giocatore</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <strong>⚽ Calcetto Stats</strong>
+  <div class="nav-links">
+    <a href="players.html">← Giocatori</a>
+    <button id="darkToggle">🌙</button>
+  </div>
+</nav>
+
+<div id="profile"></div>
+
+<script type="module">
+import { initDarkMode } from "./js/darkmode.js";
+import { getPlayers, getMatches } from "./js/db.js";
+import { computeStats } from "./js/stats.js";
+
+initDarkMode();
+
+const id = new URLSearchParams(location.search).get("id");
+const players = await getPlayers();
+const matches = await getMatches();
+const stats = computeStats(players, matches);
+
+const p = stats[id];
+
+document.getElementById("profile").innerHTML = `
+  <div class="player-card">
+    <img src="assets/players/${p.photo}">
+    <h2>${p.name}</h2>
+    ${p.badges.map(b=>`<span class="badge">${b}</span>`).join("")}
+
+    <div class="stats-grid">
+      <div>${p.games}<br>Partite</div>
+      <div>${p.goals}<br>Gol</div>
+      <div>${p.assists}<br>Assist</div>
+      <div>${p.points}<br>Punti</div>
+    </div>
+  </div>
+`;
+</script>
+
+</body>
+</html>
