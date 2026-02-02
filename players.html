@@ -26,32 +26,36 @@ import { computeStats } from "./js/stats.js";
 
 initDarkMode();
 
-const players = [
-  {id:"luca",name:"Luca"},
-  {id:"marco",name:"Marco"},
-  {id:"ale",name:"Ale"},
-  {id:"gio",name:"Gio"}
+const PLAYERS = [
+  { id:"luca", name:"Luca" },
+  { id:"marco", name:"Marco" },
+  { id:"ale", name:"Ale" },
+  { id:"gio", name:"Gio" }
 ];
 
 const matches = await getMatches();
-const stats = computeStats(players, matches);
-const el = document.getElementById("players");
+const stats = computeStats(PLAYERS, matches);
 
-Object.values(stats).forEach(p=>{
-  el.innerHTML += `
-  <div class="player-card">
-    <img src="assets/players/${p.id}.jpg">
-    <h3>${p.name}</h3>
-    ${p.badges.map(b=>`<span class="badge">${b}</span>`).join("")}
-    <div class="stats-grid">
-      <div>${p.games}<br>Partite</div>
-      <div>${p.goals}<br>Gol</div>
-      <div>${p.assists}<br>Assist</div>
-      <div>${p.points}<br>Punti</div>
+const container = document.getElementById("players");
+container.innerHTML = "";
+
+Object.values(stats).forEach(p => {
+  container.innerHTML += `
+    <div class="player-card">
+      <img src="assets/players/${p.id}.jpg">
+      <h3>${p.name}</h3>
+      ${p.badges.map(b => `<span class="badge">${b}</span>`).join("")}
+      <div class="stats-grid">
+        <div>${p.games}<br>Partite</div>
+        <div>${p.goals}<br>Gol</div>
+        <div>${p.assists}<br>Assist</div>
+        <div>${p.points}<br>Punti</div>
+      </div>
     </div>
-  </div>`;
+  `;
 });
 </script>
+
 
 </body>
 </html>
