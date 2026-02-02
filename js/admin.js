@@ -97,22 +97,32 @@ saveMatch.onclick = async () => {
   const teamAIds = [...document.querySelectorAll("#teamA input:checked")].map(i => i.value);
   const teamBIds = [...document.querySelectorAll("#teamB input:checked")].map(i => i.value);
 
-  if (teamAIds.length === 0 || teamBIds.length === 0) {
-    alert("Seleziona i giocatori per entrambe le squadre");
+  if (!date.value || !time.value || !place.value) {
+    alert("Inserisci data, ora e luogo");
     return;
   }
 
-  await addMatch({
+  if (teamAIds.length === 0 || teamBIds.length === 0) {
+    alert("Seleziona almeno un giocatore per squadra");
+    return;
+  }
+
+  const match = {
     date: date.value,
     time: time.value,
     place: place.value,
     teamA: teamAIds,
     teamB: teamBIds,
-    scoreA: +scoreA.value,
-    scoreB: +scoreB.value,
-    goals
-  });
+    scoreA: Number(scoreA.value),
+    scoreB: Number(scoreB.value),
+    goals: goals
+  };
+
+  console.log("MATCH SALVATO:", match); // 🔍 DEBUG
+
+  await addMatch(match);
 
   alert("Match salvato correttamente");
   goals = [];
 };
+
