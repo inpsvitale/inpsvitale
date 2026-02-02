@@ -38,7 +38,7 @@ Object.values(stats).forEach(p => {
     <a class="player-card" href="player.html?id=${p.id}">
       <img src="assets/players/${p.photo}">
       <h3>${p.name}</h3>
-      ${p.badges.map(b => `<span class="badge">${b}</span>`).join("")}
+      ${p.badges.map(b => `<span class="badge">${b.label}</span>`).join("")}
       <div class="stats-grid">
         <div>${p.games}<br>Partite</div>
         <div>${p.goals}<br>Gol</div>
