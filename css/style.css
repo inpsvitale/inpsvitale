@@ -24,7 +24,9 @@ body {
   transition: background .3s, color .3s;
 }
 
-/* NAVBAR */
+/* =====================
+   NAVBAR
+===================== */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -48,16 +50,30 @@ body {
 }
 
 .nav-links a:hover,
-.nav-links button:hover { opacity: 1; }
+.nav-links button:hover {
+  opacity: 1;
+}
 
-/* GRID */
+/* =====================
+   CONTENT WRAPPER
+===================== */
+.content {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* =====================
+   GRID
+===================== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
   gap: 18px;
 }
 
-/* PLAYER CARD */
+/* =====================
+   PLAYER CARD
+===================== */
 .player-card {
   background: var(--card);
   border-radius: 18px;
@@ -79,6 +95,9 @@ body {
   object-fit: cover;
 }
 
+/* =====================
+   BADGES
+===================== */
 .badge {
   display: inline-block;
   background: var(--accent);
@@ -89,7 +108,9 @@ body {
   margin: 4px 2px;
 }
 
-/* STATS GRID */
+/* =====================
+   STATS GRID
+===================== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2,1fr);
@@ -104,7 +125,9 @@ body {
   font-size: .85rem;
 }
 
-/* TABLE (CLASSIFICHE) */
+/* =====================
+   TABLE (CLASSIFICA)
+===================== */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -131,7 +154,9 @@ body.dark tbody tr:hover {
   background: rgba(255,255,255,0.05);
 }
 
-/* MATCH CARD */
+/* =====================
+   MATCH CARD
+===================== */
 .match-card {
   background: linear-gradient(135deg,#111,#333);
   color: white;
@@ -141,7 +166,9 @@ body.dark tbody tr:hover {
   transition: transform .2s;
 }
 
-.match-card:hover { transform: translateY(-4px); }
+.match-card:hover {
+  transform: translateY(-4px);
+}
 
 .match-header {
   display: flex;
@@ -156,7 +183,9 @@ body.dark tbody tr:hover {
   margin: 10px 0;
 }
 
-/* MATCH DETAIL */
+/* =====================
+   MATCH DETAIL
+===================== */
 .match-detail {
   background: var(--card);
   border-radius: 18px;
@@ -169,11 +198,9 @@ body.dark tbody tr:hover {
   font-size: 2.2rem;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  .match-score { font-size: 2rem; }
-}
-
+/* =====================
+   ANIMATIONS
+===================== */
 .player-card,
 .match-card {
   animation: fadeUp 0.4s ease;
@@ -191,17 +218,23 @@ body.dark tbody tr:hover {
 }
 
 /* =====================
-   MOBILE RESPONSIVE
+   MOBILE APP-LIKE LAYOUT
 ===================== */
 @media (max-width: 600px) {
 
+  /* reset desktop padding */
   body {
-    padding: 12px;
+    padding: 0;
     font-size: 16px;
   }
 
+  /* NAVBAR full width */
   .navbar {
-    padding: 12px;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    padding: 14px 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   }
 
   .nav-links {
@@ -211,34 +244,43 @@ body.dark tbody tr:hover {
 
   .nav-links a,
   .nav-links button {
+    margin-left: 0;
     font-size: 0.9rem;
     padding: 6px 8px;
   }
 
-  /* cards più grandi */
+  /* content padding sotto navbar */
+  .content,
+  #players,
+  #matches,
+  #content {
+    padding: 14px;
+  }
+
+  /* cards app-like */
   .player-card,
   .match-card,
   .match-detail {
+    border-radius: 0;
     padding: 18px;
-    border-radius: 20px;
   }
 
   .player-card img {
-    width: 110px;
-    height: 110px;
+    width: 120px;
+    height: 120px;
   }
 
   .stats-grid {
-    gap: 12px;
+    gap: 14px;
   }
 
   .stats-grid div {
-    font-size: 0.9rem;
-    padding: 10px;
+    font-size: 1rem;
+    padding: 12px;
   }
 
   .match-score {
-    font-size: 2.8rem;
+    font-size: 3rem;
   }
 
   table th,
@@ -247,4 +289,3 @@ body.dark tbody tr:hover {
     font-size: 0.85rem;
   }
 }
-
