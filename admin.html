@@ -7,30 +7,57 @@
 </head>
 <body>
 
-<h1>Admin – Aggiungi Match</h1>
+<nav class="navbar">
+  <strong>⚽ Calcetto Stats – Admin</strong>
+  <div class="nav-links">
+    <button id="darkToggle">🌙</button>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</nav>
 
-<input id="date" type="date">
-<input id="time" type="time">
-<input id="place" placeholder="Luogo">
-<input id="scoreA" type="number" placeholder="Gol A">
-<input id="scoreB" type="number" placeholder="Gol B">
-<button id="save">Salva</button>
+<!-- LOGIN -->
+<div id="loginBox" class="match-detail">
+  <h2>Login Admin</h2>
+  <input id="email" placeholder="Email"><br><br>
+  <input id="password" type="password" placeholder="Password"><br><br>
+  <button id="loginBtn">Login</button>
+</div>
+
+<!-- ADMIN -->
+<div id="adminBox" class="match-detail" style="display:none">
+  <h2>Aggiungi Match</h2>
+
+  <input id="date" type="date"><br><br>
+  <input id="time" type="time"><br><br>
+  <input id="place" placeholder="Luogo"><br><br>
+
+  <h3>Risultato</h3>
+  <input id="scoreA" type="number" placeholder="Gol Squadra A">
+  <input id="scoreB" type="number" placeholder="Gol Squadra B">
+
+  <br><br>
+  <button id="saveMatch">Salva Match</button>
+</div>
 
 <script type="module">
+import { initDarkMode } from "./js/darkmode.js";
+import "./js/admin.js";
 import { addMatch } from "./js/db.js";
 
-save.onclick = async () => {
+initDarkMode();
+
+document.getElementById("saveMatch").onclick = async () => {
   await addMatch({
-    date:date.value,
-    time:time.value,
-    place:place.value,
-    teamA:["luca","marco"],
-    teamB:["ale","gio"],
-    scoreA:+scoreA.value,
-    scoreB:+scoreB.value,
-    goals:[]
+    date: date.value,
+    time: time.value,
+    place: place.value,
+    teamA: ["luca", "marco"],
+    teamB: ["ale", "gio"],
+    scoreA: +scoreA.value,
+    scoreB: +scoreB.value,
+    goals: []
   });
-  alert("Match inserito");
+  alert("Match salvato!");
 };
 </script>
 
