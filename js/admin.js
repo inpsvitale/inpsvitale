@@ -154,3 +154,7 @@ saveMatch.onclick = async () => {
   goals = [];
   goalsList.innerHTML = "";
 };
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/inpsvitale/sw.js");
+}
