@@ -5,7 +5,6 @@
   <title>Dettaglio Match</title>
   <link rel="stylesheet" href="css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="./manifest.json">
 </head>
 <body>
 
@@ -18,12 +17,12 @@
 </nav>
 
 <main class="content">
-  <div id="content"></div>
+  <div id="content">⏳ Caricamento match…</div>
 </main>
 
 <script type="module">
 /* =====================
-   IMPORTS
+   IMPORT
 ===================== */
 import { initDarkMode } from "./js/darkmode.js";
 import { getMatches, getPlayers } from "./js/db.js";
@@ -34,66 +33,76 @@ import { computeMatchMVP } from "./js/stats.js";
 ===================== */
 initDarkMode();
 
+const out = document.getElementById("content");
+
 /* =====================
    LOAD DATA
 ===================== */
-const id = new URLSearchParams(location.search).get("id");
-const matches = await getMatches();
-const players = await getPlayers();
+try {
+  const id = new URLSearchParams(location.search).get("id");
 
-const match = matches.find(m => m.id === id);
+  const matches = await getMatches();
+  const players = await getPlayers();
 
-if (!match) {
-  document.getElementById("content").innerHTML = "<p>Match non trovato</p>";
-  throw new Error("Match non trovato");
+  const match = matches.find(m => m.id === id);
+
+  if (!match) {
+    out.innerHTML = "<p>❌ Match non trovato</p>";
+    throw new Error("Match non trovato");
+  }
+
+  /* =====================
+     HELPERS
+  ===================== */
+  const nameOf = pid =>
+    players.find(p => p.id === pid)?.name || pid;
+
+  const goals = Array.isArray(match.goals) ? match.goals : [];
+
+  /* =====================
+     MVP (USO DI match SOLO ORA)
+  ===================== */
+  const mvpId = computeMatchMVP({ ...match, goals });
+  const mvpName = mvpId ? nameOf(mvpId) : "—";
+
+  /* =====================
+     RENDER
+  ===================== */
+  out.innerHTML = `
+    <div class="match-detail">
+      <h2>${match.scoreA} - ${match.scoreB}</h2>
+      <p><strong>${match.date} • ${match.time}</strong></p>
+      <p>${match.place || ""}</p>
+
+      <h3>Squadra A</h3>
+      <p>${match.teamA.map(nameOf).join(", ")}</p>
+
+      <h3>Squadra B</h3>
+      <p>${match.teamB.map(nameOf).join(", ")}</p>
+
+      <h3>⭐ MVP del Match</h3>
+      <p><strong>${mvpName}</strong></p>
+
+      <h3>⚽ Gol</h3>
+      <ul>
+        ${goals.map(g => `
+          <li>
+            ${nameOf(g.scorer)}
+            ${g.assist ? "(assist " + nameOf(g.assist) + ")" : ""}
+          </li>
+        `).join("")}
+      </ul>
+    </div>
+  `;
 }
-
-/* =====================
-   HELPERS
-===================== */
-const nameOf = pid =>
-  players.find(p => p.id === pid)?.name || pid;
-
-/* =====================
-   MVP
-===================== */
-const mvpId = computeMatchMVP(match);
-const mvpName = mvpId ? nameOf(mvpId) : "—";
-
-/* =====================
-   RENDER
-===================== */
-document.getElementById("content").innerHTML = `
-  <div class="match-detail">
-    <h2>${match.scoreA} - ${match.scoreB}</h2>
-    <p><strong>${match.date} • ${match.time}</strong></p>
-    <p>${match.place}</p>
-
-    <h3>Squadra A</h3>
-    <p>${match.teamA.map(nameOf).join(", ")}</p>
-
-    <h3>Squadra B</h3>
-    <p>${match.teamB.map(nameOf).join(", ")}</p>
-
-    <h3>⭐ MVP del Match</h3>
-    <p><strong>${mvpName}</strong></p>
-
-    <h3>⚽ Gol</h3>
-    <ul>
-      ${match.goals.map(g => `
-        <li>
-          ${nameOf(g.scorer)}
-          ${g.assist ? "(assist " + nameOf(g.assist) + ")" : ""}
-        </li>
-      `).join("")}
-    </ul>
-  </div>
-`;
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
+catch (err) {
+  out.innerHTML = `
+    <div class="match-detail">
+      <h3>❌ Errore</h3>
+      <pre>${err.message}</pre>
+    </div>
+  `;
+  console.error(err);
 }
 </script>
 
