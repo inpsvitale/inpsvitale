@@ -82,31 +82,60 @@ function updateGoalSelectors() {
 }
 
 addGoal.onclick = () => {
-  if (!scorer.value) return;
+  const s = scorer.value;
+  const a = assist.value || null;
 
-  goals.push({
-    scorer: scorer.value,
-    assist: assist.value || null
-  });
+  if (!s) {
+    alert("Seleziona un marcatore");
+    return;
+  }
 
+  const teamAIds = [...document.querySelectorAll("#teamA input:checked")].map(i => i.value);
+  const teamBIds = [...document.querySelectorAll("#teamB input:checked")].map(i => i.value);
+  const onField = [...teamAIds, ...teamBIds];
+
+  if (!onField.includes(s) || (a && !onField.includes(a))) {
+    alert("Gol valido solo per giocatori in campo");
+    return;
+  }
+
+  goals.push({ scorer: s, assist: a });
   renderGoals();
 };
 
 function renderGoals() {
   goalsList.innerHTML = "";
-  goals.forEach(g => {
+  goals.forEach((g, i) => {
     goalsList.innerHTML += `
       <li>
-        ${g.scorer}
-        ${g.assist ? " (assist " + g.assist + ")" : ""}
+        ${g.scorer}${g.assist ? " (assist " + g.assist + ")" : ""}
+        <button onclick="removeGoal(${i})">❌</button>
       </li>
     `;
   });
 }
 
+window.removeGoal = index => {
+  goals.splice(index, 1);
+  renderGoals();
+};
+
 saveMatch.onclick = async () => {
   const teamAIds = [...document.querySelectorAll("#teamA input:checked")].map(i => i.value);
   const teamBIds = [...document.querySelectorAll("#teamB input:checked")].map(i => i.value);
+
+  // ❌ stesso giocatore in entrambe le squadre
+  const overlap = teamAIds.filter(id => teamBIds.includes(id));
+  if (overlap.length > 0) {
+    alert("Un giocatore non può essere in entrambe le squadre");
+    return;
+  }
+
+  const totalGoals = Number(scoreA.value) + Number(scoreB.value);
+  if (goals.length !== totalGoals) {
+    alert("Il numero di gol inseriti non corrisponde al risultato");
+    return;
+  }
 
   const match = {
     date: date.value,
@@ -119,11 +148,9 @@ saveMatch.onclick = async () => {
     goals: [...goals]
   };
 
-  console.log("MATCH DA SALVARE:", match);
-
   await addMatch(match);
-
   alert("Match salvato correttamente");
+
   goals = [];
   goalsList.innerHTML = "";
 };
