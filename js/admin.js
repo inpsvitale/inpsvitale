@@ -21,6 +21,8 @@ loginBtn.onclick = async () => {
       passwordInput.value
     );
   } catch (e) {
+    console.error(e);
+    console.println(e.message);
     alert("Login fallito");
   }
 };
