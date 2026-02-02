@@ -10,12 +10,6 @@ const firebaseConfig = {
     messagingSenderId: "1078528600289",
     appId: "1:1078528600289:web:4ae76f5835023e5a652fa0"
 };
-
-export const app = initializeApp({
-  apiKey: "API_KEY",
-  authDomain: "PROJECT.firebaseapp.com",
-  projectId: "PROJECT_ID"
-});
-
+export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
