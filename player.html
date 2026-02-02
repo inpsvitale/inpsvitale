@@ -35,7 +35,7 @@ document.getElementById("profile").innerHTML = `
   <div class="player-card">
     <img src="assets/players/${p.photo}">
     <h2>${p.name}</h2>
-    ${p.badges.map(b=>`<span class="badge">${b}</span>`).join("")}
+    ${p.badges.map(b => `<span class="badge">${b.label}</span>`).join("")}
 
     <div class="stats-grid">
       <div>${p.games}<br>Partite</div>
