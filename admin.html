@@ -60,6 +60,12 @@
 
 <!-- UNICO SCRIPT -->
 <script type="module" src="./js/admin.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
 
+</script>
+  
 </body>
 </html>
