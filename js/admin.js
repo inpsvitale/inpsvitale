@@ -34,6 +34,7 @@ onAuthStateChanged(auth, user => {
 /* =====================
    ADMIN LOGIC
 ===================== */
+
 let players = [];
 let goals = [];
 
@@ -75,10 +76,12 @@ function updateGoalSelectors() {
 
 addGoal.onclick = () => {
   if (!scorer.value) return;
+
   goals.push({
     scorer: scorer.value,
     assist: assist.value || null
   });
+
   renderGoals();
 };
 
@@ -87,7 +90,8 @@ function renderGoals() {
   goals.forEach(g => {
     goalsList.innerHTML += `
       <li>
-        ${g.scorer}${g.assist ? " (assist " + g.assist + ")" : ""}
+        ${g.scorer}
+        ${g.assist ? " (assist " + g.assist + ")" : ""}
       </li>
     `;
   });
@@ -97,16 +101,6 @@ saveMatch.onclick = async () => {
   const teamAIds = [...document.querySelectorAll("#teamA input:checked")].map(i => i.value);
   const teamBIds = [...document.querySelectorAll("#teamB input:checked")].map(i => i.value);
 
-  if (!date.value || !time.value || !place.value) {
-    alert("Inserisci data, ora e luogo");
-    return;
-  }
-
-  if (teamAIds.length === 0 || teamBIds.length === 0) {
-    alert("Seleziona almeno un giocatore per squadra");
-    return;
-  }
-
   const match = {
     date: date.value,
     time: time.value,
@@ -115,14 +109,14 @@ saveMatch.onclick = async () => {
     teamB: teamBIds,
     scoreA: Number(scoreA.value),
     scoreB: Number(scoreB.value),
-    goals: goals
+    goals: [...goals]   // ⬅️ COPIA REALE
   };
 
-  console.log("MATCH SALVATO:", match); // 🔍 DEBUG
+  console.log("MATCH DA SALVARE:", match);
 
   await addMatch(match);
 
-  alert("Match salvato correttamente");
+  alert("Match salvato");
   goals = [];
+  goalsList.innerHTML = "";
 };
-
