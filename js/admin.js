@@ -22,8 +22,8 @@ loginBtn.onclick = async () => {
     );
   } catch (e) {
     console.error(e);
-    console.println(e.message);
-    alert("Login fallito");
+    alert(e.message);
+    //alert("Login fallito");
   }
 };
 
