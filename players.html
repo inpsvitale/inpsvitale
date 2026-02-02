@@ -35,7 +35,7 @@ container.innerHTML = "";
 
 Object.values(stats).forEach(p => {
   container.innerHTML += `
-    <div class="player-card">
+    <a class="player-card" href="player.html?id=${p.id}">
       <img src="assets/players/${p.photo}">
       <h3>${p.name}</h3>
       ${p.badges.map(b => `<span class="badge">${b}</span>`).join("")}
@@ -45,7 +45,6 @@ Object.values(stats).forEach(p => {
         <div>${p.assists}<br>Assist</div>
         <div>${p.points}<br>Punti</div>
       </div>
-    </div>
   `;
 });
 </script>
