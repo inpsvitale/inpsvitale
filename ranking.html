@@ -33,29 +33,34 @@
 
 <script type="module">
 import { initDarkMode } from "./js/darkmode.js";
-import { getMatches } from "./js/db.js";
+import { getPlayers, getMatches } from "./js/db.js";
 import { computeStats } from "./js/stats.js";
 
 initDarkMode();
 
-const PLAYERS = [
-  { id:"luca", name:"Luca" },
-  { id:"marco", name:"Marco" },
-  { id:"ale", name:"Ale" },
-  { id:"gio", name:"Gio" }
-];
-
+const players = await getPlayers();
 const matches = await getMatches();
-const stats = Object.values(computeStats(PLAYERS, matches))
-  .sort((a,b) => b.goals - a.goals);
+
+// 🔥 stats calcolate LIVE
+const stats = Object.values(
+  computeStats(players, matches)
+);
+
+// Ordinamento classifica (puoi cambiarlo)
+stats.sort((a, b) => {
+  if (b.points !== a.points) return b.points - a.points;
+  if (b.goals !== a.goals) return b.goals - a.goals;
+  return b.assists - a.assists;
+});
 
 const tbody = document.getElementById("ranking");
 tbody.innerHTML = "";
 
-stats.forEach(p => {
+stats.forEach((p, i) => {
   tbody.innerHTML += `
     <tr>
-      <td>${p.name}</td>
+      <td>${i+1}. ${p.name}</td>
+      <td>${p.games}</td>
       <td>${p.goals}</td>
       <td>${p.assists}</td>
       <td>${p.points}</td>
@@ -63,6 +68,7 @@ stats.forEach(p => {
   `;
 });
 </script>
+
 
 
 </body>
