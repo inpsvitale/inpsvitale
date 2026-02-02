@@ -7,6 +7,11 @@ import {
 
 import { getPlayers, addMatch } from "./db.js";
 
+import { initDarkMode } from "./darkmode.js";
+
+initDarkMode();
+
+
 /* =====================
    LOGIN
 ===================== */
