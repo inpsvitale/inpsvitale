@@ -1,4 +1,4 @@
-const CACHE = "inps-v1.1";
+const CACHE = "inps-v1.2";
 
 self.addEventListener("install", e => {
   e.waitUntil(
