@@ -1,7 +1,7 @@
 {
-  "name": "Calcetto Stats",
-  "short_name": "Calcetto",
-  "start_url": "/calcetto-stats/players.html",
+  "name": "Inps Vitale",
+  "short_name": "Inps",
+  "start_url": "/inpsvitale/players.html",
   "display": "standalone",
   "background_color": "#0f1115",
   "theme_color": "#1e90ff",
