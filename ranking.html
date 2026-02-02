@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Classifiche</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-title">⚽ Calcetto Stats</div>
+  <div class="nav-links">
+    <a href="players.html">Giocatori</a>
+    <a href="ranking.html">Classifiche</a>
+    <a href="matches.html">Match</a>
+    <button id="darkToggle">🌙</button>
+  </div>
+</nav>
+
+<h1>🏆 Classifica</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Giocatore</th>
+      <th>Gol</th>
+      <th>Assist</th>
+      <th>Punti</th>
+    </tr>
+  </thead>
+  <tbody id="ranking"></tbody>
+</table>
+
+<script type="module">
+
+import { players, matches } from "./js/mockData.js";
+import { computeStats } from "./js/stats.js";
+import { initDarkMode } from "./js/darkmode.js";
+
+initDarkMode();
+
+const stats = Object.values(computeStats(players, matches))
+  .sort((a,b) => b.goals - a.goals);
+
+const tbody = document.getElementById("ranking");
+
+stats.forEach(p => {
+  tbody.innerHTML += `
+    <tr>
+      <td>${p.name}</td>
+      <td>${p.goals}</td>
+      <td>${p.assists}</td>
+      <td>${p.points}</td>
+    </tr>
+  `;
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Giocatori</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <strong>⚽ Calcetto Stats</strong>
+  <div class="nav-links">
+    <a href="players.html">Giocatori</a>
+    <a href="ranking.html">Classifiche</a>
+    <a href="matches.html">Match</a>
+    <button id="darkToggle">🌙</button>
+  </div>
+</nav>
+
+<div class="grid" id="players"></div>
+
+<script type="module">
+import { initDarkMode } from "./js/darkmode.js";
+import { getMatches } from "./js/db.js";
+import { computeStats } from "./js/stats.js";
+
+initDarkMode();
+
+const players = [
+  {id:"luca",name:"Luca"},
+  {id:"marco",name:"Marco"},
+  {id:"ale",name:"Ale"},
+  {id:"gio",name:"Gio"}
+];
+
+const matches = await getMatches();
+const stats = computeStats(players, matches);
+const el = document.getElementById("players");
+
+Object.values(stats).forEach(p=>{
+  el.innerHTML += `
+  <div class="player-card">
+    <img src="assets/players/${p.id}.jpg">
+    <h3>${p.name}</h3>
+    ${p.badges.map(b=>`<span class="badge">${b}</span>`).join("")}
+    <div class="stats-grid">
+      <div>${p.games}<br>Partite</div>
+      <div>${p.goals}<br>Gol</div>
+      <div>${p.assists}<br>Assist</div>
+      <div>${p.points}<br>Punti</div>
+    </div>
+  </div>`;
+});
+</script>
+
+</body>
+</html>

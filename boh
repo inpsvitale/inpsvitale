@@ -1,0 +1,19 @@
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCgK9cHVcaIlYQriPYzO9x_UWjZEpDs17w",
+    authDomain: "inpsvitale-1b1bf.firebaseapp.com",
+    projectId: "inpsvitale-1b1bf",
+    storageBucket: "inpsvitale-1b1bf.firebasestorage.app",
+    messagingSenderId: "1078528600289",
+    appId: "1:1078528600289:web:4ae76f5835023e5a652fa0"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>

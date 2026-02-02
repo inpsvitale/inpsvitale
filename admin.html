@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Admin – Aggiungi Match</h1>
+
+<input id="date" type="date">
+<input id="time" type="time">
+<input id="place" placeholder="Luogo">
+<input id="scoreA" type="number" placeholder="Gol A">
+<input id="scoreB" type="number" placeholder="Gol B">
+<button id="save">Salva</button>
+
+<script type="module">
+import { addMatch } from "./js/db.js";
+
+save.onclick = async () => {
+  await addMatch({
+    date:date.value,
+    time:time.value,
+    place:place.value,
+    teamA:["luca","marco"],
+    teamB:["ale","gio"],
+    scoreA:+scoreA.value,
+    scoreB:+scoreB.value,
+    goals:[]
+  });
+  alert("Match inserito");
+};
+</script>
+
+</body>
+</html>

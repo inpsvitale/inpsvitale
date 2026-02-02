@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Match</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-title">⚽ Calcetto Stats</div>
+  <div class="nav-links">
+    <a href="players.html">Giocatori</a>
+    <a href="ranking.html">Classifiche</a>
+    <a href="matches.html">Match</a>
+    <button id="darkToggle">🌙</button>
+  </div>
+</nav>
+
+<h1>🗓️ Match</h1>
+<div id="matches" class="grid"></div>
+
+<script type="module">
+  
+import { matches } from "./js/mockData.js";
+import { initDarkMode } from "./js/darkmode.js";
+
+initDarkMode();
+
+const container = document.getElementById("matches");
+
+matches.forEach(m => {
+  container.innerHTML += `
+    <a class="match-card" href="match.html?id=${m.id}">
+      <div class="match-header">
+        <span>${m.date} • ${m.time}</span>
+        <span>${m.place}</span>
+      </div>
+      <div class="match-score">${m.scoreA} - ${m.scoreB}</div>
+    </a>
+  `;
+});
+</script>
+
+</body>
+</html>

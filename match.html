@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Match</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-title">⚽ Calcetto Stats</div>
+  <div class="nav-links">
+    <a href="players.html">Giocatori</a>
+    <a href="ranking.html">Classifiche</a>
+    <a href="matches.html">Match</a>
+    <button id="darkToggle">🌙</button>
+  </div>
+</nav>
+
+<div id="match"></div>
+
+<script type="module">
+
+import { initDarkMode } from "./js/darkmode.js";
+import { matches } from "./js/mockData.js";
+
+initDarkMode();
+
+const id = new URLSearchParams(location.search).get("id");
+const m = matches.find(x => x.id === id);
+
+document.getElementById("match").innerHTML = `
+  <div class="match-detail">
+    <h2>${m.scoreA} - ${m.scoreB}</h2>
+    <p><strong>${m.date} • ${m.time}</strong></p>
+    <p>${m.place}</p>
+
+    <p><strong>Squadra A:</strong> ${m.teamA.join(", ")}</p>
+    <p><strong>Squadra B:</strong> ${m.teamB.join(", ")}</p>
+
+    <h3>⚽ Gol</h3>
+    <ul>
+      ${m.goals.map(g =>
+        `<li>${g.scorer}${g.assist ? " (assist " + g.assist + ")" : ""}</li>`
+      ).join("")}
+    </ul>
+  </div>
+`;
+</script>
+
+</body>
+</html>
