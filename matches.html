@@ -21,13 +21,13 @@
 <div id="matches" class="grid"></div>
 
 <script type="module">
-  
-import { matches } from "./js/mockData.js";
 import { initDarkMode } from "./js/darkmode.js";
+import { getMatches } from "./js/db.js";
 
 initDarkMode();
 
 const container = document.getElementById("matches");
+const matches = await getMatches();
 
 matches.forEach(m => {
   container.innerHTML += `
@@ -41,6 +41,7 @@ matches.forEach(m => {
   `;
 });
 </script>
+
 
 </body>
 </html>
