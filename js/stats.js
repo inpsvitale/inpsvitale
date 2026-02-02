@@ -1,11 +1,12 @@
 export function computeStats(players, matches) {
   const stats = {};
 
-  // init
+  // Init stats per ogni giocatore
   players.forEach(p => {
     stats[p.id] = {
       id: p.id,
       name: p.name,
+      photo: p.photo,
       games: 0,
       goals: 0,
       assists: 0,
@@ -14,20 +15,21 @@ export function computeStats(players, matches) {
     };
   });
 
+  // Calcolo stats dai match
   matches.forEach(m => {
     const resultA = m.scoreA > m.scoreB ? 3 : m.scoreA === m.scoreB ? 1 : 0;
     const resultB = m.scoreB > m.scoreA ? 3 : m.scoreA === m.scoreB ? 1 : 0;
 
-    m.teamA.forEach(p => {
-      if (!stats[p]) return;
-      stats[p].games++;
-      stats[p].points += resultA;
+    m.teamA.forEach(id => {
+      if (!stats[id]) return;
+      stats[id].games++;
+      stats[id].points += resultA;
     });
 
-    m.teamB.forEach(p => {
-      if (!stats[p]) return;
-      stats[p].games++;
-      stats[p].points += resultB;
+    m.teamB.forEach(id => {
+      if (!stats[id]) return;
+      stats[id].games++;
+      stats[id].points += resultB;
     });
 
     m.goals.forEach(g => {
@@ -36,18 +38,27 @@ export function computeStats(players, matches) {
     });
   });
 
-  // badge
-  const max = key =>
-    Math.max(...Object.values(stats).map(p => p[key]));
+  // --- BADGE DINAMICI ---
+  const values = Object.values(stats);
+  const max = key => Math.max(...values.map(p => p[key]));
 
   const maxGoals = max("goals");
   const maxAssists = max("assists");
   const maxGames = max("games");
+  const maxPoints = max("points");
 
-  Object.values(stats).forEach(p => {
-    if (p.goals === maxGoals && maxGoals > 0) p.badges.push("🥇 Top Scorer");
-    if (p.assists === maxAssists && maxAssists > 0) p.badges.push("🎯 Assist King");
-    if (p.games === maxGames && maxGames > 0) p.badges.push("💪 Iron Man");
+  values.forEach(p => {
+    if (p.goals === maxGoals && maxGoals > 0)
+      p.badges.push({ id:"top-scorer", label:"🥇 Top Scorer" });
+
+    if (p.assists === maxAssists && maxAssists > 0)
+      p.badges.push({ id:"assist-king", label:"🎯 Assist King" });
+
+    if (p.games === maxGames && maxGames > 0)
+      p.badges.push({ id:"iron-man", label:"💪 Iron Man" });
+
+    if (p.points === maxPoints && maxPoints > 0)
+      p.badges.push({ id:"mvp", label:"⭐ MVP" });
   });
 
   return stats;
