@@ -5,25 +5,19 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+import { getPlayers, addMatch } from "./db.js";
+
+/* =====================
+   LOGIN
+===================== */
 const loginBox = document.getElementById("loginBox");
 const adminBox = document.getElementById("adminBox");
 
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-
 loginBtn.onclick = async () => {
   try {
-    await signInWithEmailAndPassword(
-      auth,
-      emailInput.value,
-      passwordInput.value
-    );
+    await signInWithEmailAndPassword(auth, email.value, password.value);
   } catch (e) {
-    console.error(e);
     alert(e.message);
-    //alert("Login fallito");
   }
 };
 
@@ -32,41 +26,46 @@ logoutBtn.onclick = async () => {
 };
 
 onAuthStateChanged(auth, user => {
-  if (user) {
-    loginBox.style.display = "none";
-    adminBox.style.display = "block";
-  } else {
-    loginBox.style.display = "block";
-    adminBox.style.display = "none";
-  }
+  loginBox.style.display = user ? "none" : "block";
+  adminBox.style.display = user ? "block" : "none";
+  if (user) initAdmin();
 });
 
-
-import { getPlayers, addMatch } from "./db.js";
-
+/* =====================
+   ADMIN LOGIC
+===================== */
 let players = [];
 let goals = [];
 
 async function initAdmin() {
   players = await getPlayers();
-
-  const teamA = document.getElementById("teamA");
-  const teamB = document.getElementById("teamB");
-
-  players.forEach(p => {
-    teamA.innerHTML += `<label><input type="checkbox" value="${p.id}"> ${p.name}</label><br>`;
-    teamB.innerHTML += `<label><input type="checkbox" value="${p.id}"> ${p.name}</label><br>`;
-  });
-
+  renderTeams();
   updateGoalSelectors();
 }
 
-function updateGoalSelectors() {
-  const scorer = document.getElementById("scorer");
-  const assist = document.getElementById("assist");
+function renderTeams() {
+  teamA.innerHTML = "";
+  teamB.innerHTML = "";
 
+  players.forEach(p => {
+    teamA.innerHTML += `
+      <label>
+        <input type="checkbox" value="${p.id}">
+        ${p.name}
+      </label><br>
+    `;
+    teamB.innerHTML += `
+      <label>
+        <input type="checkbox" value="${p.id}">
+        ${p.name}
+      </label><br>
+    `;
+  });
+}
+
+function updateGoalSelectors() {
   scorer.innerHTML = `<option value="">Marcatore</option>`;
-  assist.innerHTML = `<option value="">Assist</option>`;
+  assist.innerHTML = `<option value="">Assist (opzionale)</option>`;
 
   players.forEach(p => {
     scorer.innerHTML += `<option value="${p.id}">${p.name}</option>`;
@@ -74,40 +73,46 @@ function updateGoalSelectors() {
   });
 }
 
-document.getElementById("addGoal").onclick = () => {
-  const scorer = document.getElementById("scorer").value;
-  const assist = document.getElementById("assist").value || null;
-  if (!scorer) return;
-
-  goals.push({ scorer, assist });
+addGoal.onclick = () => {
+  if (!scorer.value) return;
+  goals.push({
+    scorer: scorer.value,
+    assist: assist.value || null
+  });
   renderGoals();
 };
 
 function renderGoals() {
-  const list = document.getElementById("goalsList");
-  list.innerHTML = "";
+  goalsList.innerHTML = "";
   goals.forEach(g => {
-    list.innerHTML += `<li>${g.scorer}${g.assist ? " (assist "+g.assist+")" : ""}</li>`;
+    goalsList.innerHTML += `
+      <li>
+        ${g.scorer}${g.assist ? " (assist " + g.assist + ")" : ""}
+      </li>
+    `;
   });
 }
 
-document.getElementById("saveMatch").onclick = async () => {
-  const teamA = [...document.querySelectorAll("#teamA input:checked")].map(i=>i.value);
-  const teamB = [...document.querySelectorAll("#teamB input:checked")].map(i=>i.value);
+saveMatch.onclick = async () => {
+  const teamAIds = [...document.querySelectorAll("#teamA input:checked")].map(i => i.value);
+  const teamBIds = [...document.querySelectorAll("#teamB input:checked")].map(i => i.value);
+
+  if (teamAIds.length === 0 || teamBIds.length === 0) {
+    alert("Seleziona i giocatori per entrambe le squadre");
+    return;
+  }
 
   await addMatch({
     date: date.value,
     time: time.value,
     place: place.value,
-    teamA,
-    teamB,
+    teamA: teamAIds,
+    teamB: teamBIds,
     scoreA: +scoreA.value,
     scoreB: +scoreB.value,
     goals
   });
 
-  alert("Match salvato");
+  alert("Match salvato correttamente");
   goals = [];
 };
-
-initAdmin();
