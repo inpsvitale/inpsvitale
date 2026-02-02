@@ -23,6 +23,12 @@ import { getMatches, getPlayers } from "./js/db.js";
 
 initDarkMode();
 
+import { computeMatchMVP } from "./js/stats.js";
+
+const mvpId = computeMatchMVP(match);
+const mvpName = nameOf(mvpId);
+
+
 const id = new URLSearchParams(location.search).get("id");
 const matches = await getMatches();
 const players = await getPlayers();
@@ -48,6 +54,10 @@ document.getElementById("content").innerHTML = `
 
     <h3>Squadra B</h3>
     <p>${match.teamB.map(nameOf).join(", ")}</p>
+
+    <h3>⭐ MVP del Match</h3>
+    <p><strong>${mvpName}</strong></p>
+
 
     <h3>⚽ Gol</h3>
     <ul>
