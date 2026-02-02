@@ -63,3 +63,26 @@ export function computeStats(players, matches) {
 
   return stats;
 }
+
+export function computeMatchMVP(match) {
+  const score = {};
+
+  match.goals.forEach(g => {
+    score[g.scorer] = (score[g.scorer] || 0) + 2;
+    if (g.assist) {
+      score[g.assist] = (score[g.assist] || 0) + 1;
+    }
+  });
+
+  let mvp = null;
+  let max = -1;
+
+  for (const id in score) {
+    if (score[id] > max) {
+      max = score[id];
+      mvp = id;
+    }
+  }
+
+  return mvp;
+}
