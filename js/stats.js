@@ -86,3 +86,7 @@ export function computeMatchMVP(match) {
 
   return mvp;
 }
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/inpsvitale/sw.js");
+}
