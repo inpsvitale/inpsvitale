@@ -46,6 +46,11 @@ document.getElementById("profile").innerHTML = `
   </div>
 `;
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
 
+</script>
 </body>
 </html>
