@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="manifest" href="/inpsvitale/manifest.json">
+</head>
+<body>
+  <h1>Test PWA</h1>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/inpsvitale/sw.js", { scope: "/inpsvitale/" });
+    }
+  </script>
+</body>
+</html>
