@@ -21,28 +21,22 @@
 
 <script type="module">
 import { initDarkMode } from "./js/darkmode.js";
-import { getMatches } from "./js/db.js";
+import { getPlayers, getMatches } from "./js/db.js";
 import { computeStats } from "./js/stats.js";
 
 initDarkMode();
 
-const PLAYERS = [
-  { id:"luca", name:"Luca" },
-  { id:"marco", name:"Marco" },
-  { id:"ale", name:"Ale" },
-  { id:"gio", name:"Gio" }
-];
-
+const players = await getPlayers();
 const matches = await getMatches();
-const stats = computeStats(PLAYERS, matches);
 
+const stats = computeStats(players, matches);
 const container = document.getElementById("players");
 container.innerHTML = "";
 
 Object.values(stats).forEach(p => {
   container.innerHTML += `
     <div class="player-card">
-      <img src="assets/players/${p.id}.jpg">
+      <img src="assets/players/${p.photo}">
       <h3>${p.name}</h3>
       ${p.badges.map(b => `<span class="badge">${b}</span>`).join("")}
       <div class="stats-grid">
@@ -55,7 +49,6 @@ Object.values(stats).forEach(p => {
   `;
 });
 </script>
-
 
 </body>
 </html>
