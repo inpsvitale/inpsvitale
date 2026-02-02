@@ -1,3 +1,10 @@
+console.log("🔥 ADMIN.JS DEFINITIVO CARICATO 🔥");
+
+// DARK MODE
+import { initDarkMode } from "./darkmode.js";
+initDarkMode();
+
+// FIREBASE AUTH
 import { auth } from "./firebase.js";
 import {
   signInWithEmailAndPassword,
@@ -5,12 +12,8 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+// DB
 import { getPlayers, addMatch } from "./db.js";
-
-import { initDarkMode } from "./darkmode.js";
-
-initDarkMode();
-
 
 /* =====================
    LOGIN
@@ -39,7 +42,6 @@ onAuthStateChanged(auth, user => {
 /* =====================
    ADMIN LOGIC
 ===================== */
-
 let players = [];
 let goals = [];
 
@@ -114,14 +116,14 @@ saveMatch.onclick = async () => {
     teamB: teamBIds,
     scoreA: Number(scoreA.value),
     scoreB: Number(scoreB.value),
-    goals: [...goals]   // ⬅️ COPIA REALE
+    goals: [...goals]
   };
 
   console.log("MATCH DA SALVARE:", match);
 
   await addMatch(match);
 
-  alert("Match salvato");
+  alert("Match salvato correttamente");
   goals = [];
   goalsList.innerHTML = "";
 };
