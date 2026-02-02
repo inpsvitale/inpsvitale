@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<title>Dettaglio Match</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>Dettaglio Match</title>
+  <link rel="stylesheet" href="css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="./manifest.json">
 </head>
 <body>
 
@@ -17,21 +18,25 @@
 </nav>
 
 <main class="content">
-<div id="content"></div>
+  <div id="content"></div>
 </main>
 
 <script type="module">
+/* =====================
+   IMPORTS
+===================== */
 import { initDarkMode } from "./js/darkmode.js";
 import { getMatches, getPlayers } from "./js/db.js";
-
-initDarkMode();
-
 import { computeMatchMVP } from "./js/stats.js";
 
-const mvpId = computeMatchMVP(match);
-const mvpName = nameOf(mvpId);
+/* =====================
+   INIT
+===================== */
+initDarkMode();
 
-
+/* =====================
+   LOAD DATA
+===================== */
 const id = new URLSearchParams(location.search).get("id");
 const matches = await getMatches();
 const players = await getPlayers();
@@ -43,9 +48,21 @@ if (!match) {
   throw new Error("Match non trovato");
 }
 
-const nameOf = id =>
-  players.find(p => p.id === id)?.name || id;
+/* =====================
+   HELPERS
+===================== */
+const nameOf = pid =>
+  players.find(p => p.id === pid)?.name || pid;
 
+/* =====================
+   MVP
+===================== */
+const mvpId = computeMatchMVP(match);
+const mvpName = mvpId ? nameOf(mvpId) : "—";
+
+/* =====================
+   RENDER
+===================== */
 document.getElementById("content").innerHTML = `
   <div class="match-detail">
     <h2>${match.scoreA} - ${match.scoreB}</h2>
@@ -61,25 +78,23 @@ document.getElementById("content").innerHTML = `
     <h3>⭐ MVP del Match</h3>
     <p><strong>${mvpName}</strong></p>
 
-
     <h3>⚽ Gol</h3>
     <ul>
-      ${match.goals.map(g =>
-        `<li>
+      ${match.goals.map(g => `
+        <li>
           ${nameOf(g.scorer)}
           ${g.assist ? "(assist " + nameOf(g.assist) + ")" : ""}
-        </li>`
-      ).join("")}
+        </li>
+      `).join("")}
     </ul>
   </div>
 `;
 </script>
 
-  <script>
+<script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js");
 }
-
 </script>
 
 </body>
