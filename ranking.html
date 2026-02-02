@@ -32,17 +32,25 @@
 </table>
 
 <script type="module">
-
-import { players, matches } from "./js/mockData.js";
-import { computeStats } from "./js/stats.js";
 import { initDarkMode } from "./js/darkmode.js";
+import { getMatches } from "./js/db.js";
+import { computeStats } from "./js/stats.js";
 
 initDarkMode();
 
-const stats = Object.values(computeStats(players, matches))
+const PLAYERS = [
+  { id:"luca", name:"Luca" },
+  { id:"marco", name:"Marco" },
+  { id:"ale", name:"Ale" },
+  { id:"gio", name:"Gio" }
+];
+
+const matches = await getMatches();
+const stats = Object.values(computeStats(PLAYERS, matches))
   .sort((a,b) => b.goals - a.goals);
 
 const tbody = document.getElementById("ranking");
+tbody.innerHTML = "";
 
 stats.forEach(p => {
   tbody.innerHTML += `
@@ -55,6 +63,7 @@ stats.forEach(p => {
   `;
 });
 </script>
+
 
 </body>
 </html>
