@@ -21,13 +21,16 @@
 
 <table>
   <thead>
-    <tr>
-      <th>Giocatore</th>
-      <th>Gol</th>
-      <th>Assist</th>
-      <th>Punti</th>
-    </tr>
-  </thead>
+  <tr>
+    <th>#</th>
+    <th>Giocatore</th>
+    <th>Partite</th>
+    <th>Gol</th>
+    <th>Assist</th>
+    <th>Punti</th>
+  </tr>
+</thead>
+
   <tbody id="ranking"></tbody>
 </table>
 
@@ -59,7 +62,8 @@ tbody.innerHTML = "";
 stats.forEach((p, i) => {
   tbody.innerHTML += `
     <tr>
-      <td>${i+1}. ${p.name}</td>
+      <td>${i + 1}</td>
+      <td>${p.name}</td>
       <td>${p.games}</td>
       <td>${p.goals}</td>
       <td>${p.assists}</td>
@@ -67,6 +71,7 @@ stats.forEach((p, i) => {
     </tr>
   `;
 });
+
 </script>
 
 
