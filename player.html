@@ -9,6 +9,8 @@
 <meta name="theme-color" content="#1e90ff">
 
 </head>
+<script src="js/pwa.js"></script>
+
 <body>
 
 <nav class="navbar">
@@ -51,12 +53,7 @@ document.getElementById("profile").innerHTML = `
   </div>
 `;
 </script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
-}
 
-</script>
   </main>
 </body>
 </html>

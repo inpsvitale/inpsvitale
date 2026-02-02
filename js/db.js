@@ -22,6 +22,3 @@ export async function addMatch(match) {
   await addDoc(collection(db,"matches"), match);
 }
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/inpsvitale/sw.js");
-}

@@ -9,6 +9,8 @@
 <meta name="theme-color" content="#1e90ff">
 
 </head>
+<script src="js/pwa.js"></script>
+
 <body>
 
 <nav class="navbar">
@@ -55,12 +57,7 @@ Object.values(stats).forEach(p => {
   `;
 });
 </script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
-}
 
-</script>
 
   </main>
 </body>

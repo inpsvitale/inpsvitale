@@ -12,7 +12,3 @@ export function initDarkMode() {
   };
 }
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/inpsvitale/sw.js");
-}
-
