@@ -1,4 +1,4 @@
-const CACHE = "calcetto-v1";
+const CACHE = "inps-v0";
 
 self.addEventListener("install", e => {
   e.waitUntil(
