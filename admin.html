@@ -27,17 +27,31 @@
 <div id="adminBox" class="match-detail" style="display:none">
   <h2>Aggiungi Match</h2>
 
-  <input id="date" type="date"><br><br>
-  <input id="time" type="time"><br><br>
-  <input id="place" placeholder="Luogo"><br><br>
+  <input id="date" type="date">
+  <input id="time" type="time">
+  <input id="place" placeholder="Luogo">
+
+  <h3>Squadra A</h3>
+  <div id="teamA"></div>
+
+  <h3>Squadra B</h3>
+  <div id="teamB"></div>
 
   <h3>Risultato</h3>
-  <input id="scoreA" type="number" placeholder="Gol Squadra A">
-  <input id="scoreB" type="number" placeholder="Gol Squadra B">
+  <input id="scoreA" type="number">
+  <input id="scoreB" type="number">
 
-  <br><br>
+  <h3>Gol</h3>
+  <select id="scorer"></select>
+  <select id="assist"></select>
+  <button id="addGoal">+ Gol</button>
+
+  <ul id="goalsList"></ul>
+
+  <br>
   <button id="saveMatch">Salva Match</button>
 </div>
+
 
 <script type="module">
 import { initDarkMode } from "./js/darkmode.js";
