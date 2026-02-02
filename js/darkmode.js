@@ -11,3 +11,8 @@ export function initDarkMode() {
       document.body.classList.contains("dark") ? "1" : "0");
   };
 }
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/inpsvitale/sw.js");
+}
+
