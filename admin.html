@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<title>Admin</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>Admin – Calcetto Stats</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -18,18 +18,26 @@
 <!-- LOGIN -->
 <div id="loginBox" class="match-detail">
   <h2>Login Admin</h2>
-  <input id="email" placeholder="Email"><br><br>
+
+  <input id="email" type="email" placeholder="Email"><br><br>
   <input id="password" type="password" placeholder="Password"><br><br>
+
   <button id="loginBtn">Login</button>
 </div>
 
-<!-- ADMIN -->
+<!-- ADMIN PANEL -->
 <div id="adminBox" class="match-detail" style="display:none">
+
   <h2>Aggiungi Match</h2>
 
-  <input id="date" type="date">
-  <input id="time" type="time">
-  <input id="place" placeholder="Luogo">
+  <label>Data</label><br>
+  <input id="date" type="date"><br><br>
+
+  <label>Ora</label><br>
+  <input id="time" type="time"><br><br>
+
+  <label>Luogo</label><br>
+  <input id="place" placeholder="Luogo"><br><br>
 
   <h3>Squadra A</h3>
   <div id="teamA"></div>
@@ -38,42 +46,23 @@
   <div id="teamB"></div>
 
   <h3>Risultato</h3>
-  <input id="scoreA" type="number">
-  <input id="scoreB" type="number">
+  <input id="scoreA" type="number" placeholder="Gol Squadra A">
+  <input id="scoreB" type="number" placeholder="Gol Squadra B">
 
   <h3>Gol</h3>
   <select id="scorer"></select>
   <select id="assist"></select>
-  <button id="addGoal">+ Gol</button>
+  <button id="addGoal">+ Aggiungi Gol</button>
 
   <ul id="goalsList"></ul>
 
   <br>
-  <button id="saveMatch">Salva Match</button>
+  <button id="saveMatch">💾 Salva Match</button>
 </div>
 
-
-<script type="module">
-import { initDarkMode } from "./js/darkmode.js";
-import "./js/admin.js";
-import { addMatch } from "./js/db.js";
-
-initDarkMode();
-
-document.getElementById("saveMatch").onclick = async () => {
-  await addMatch({
-    date: date.value,
-    time: time.value,
-    place: place.value,
-    teamA: ["luca", "marco"],
-    teamB: ["ale", "gio"],
-    scoreA: +scoreA.value,
-    scoreB: +scoreB.value,
-    goals: []
-  });
-  alert("Match salvato!");
-};
-</script>
+<!-- SCRIPTS -->
+<script type="module" src="./js/darkmode.js"></script>
+<script type="module" src="./js/admin.js"></script>
 
 </body>
 </html>
